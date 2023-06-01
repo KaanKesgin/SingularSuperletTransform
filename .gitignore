@@ -1,1 +1,16 @@
 .DS_Store
+data/EineKleineNachtmusikAllegro.wav
+data/fig-3c_spikeTimes.txt
+data/fig-3d_spikeTimes.txt
+data/fig-4_spikeTimes.txt
+data/neuralData_time_0to10min__chan_296to305.npz
+data/randBurst2c.npz
+description.txt
+figure-codes/figure2-a-b-c.jl
+figure-codes/figure2-d-e.jl
+figure-codes/figure3-a.jl
+figure-codes/figure3-b.jl
+figure-codes/figure3-c-d.jl
+figure-codes/figure4-b.jl
+figure-codes/figure4-c-d.jl
+figure-codes/figure5.jl
