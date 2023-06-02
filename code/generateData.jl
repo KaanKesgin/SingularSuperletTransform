@@ -18,32 +18,28 @@ include("waveletHelper.jl") # for calling morlet wavelets in function generateSi
 #                                                                       - number of cycles sampled from cLen
 #                                                                       - amplitudes sampled from       amp
 # for the total duration of duration (s)
-function generateComplexBursts(duration, numPackets, freqs, cLen, amp, Fs; load=true, dataDir=[])
+function generateComplexBursts(duration, numPackets, freqs, cLen, amp, Fs)
 
-    if load==true #only relevant for the review process and will be removed for github
-        y = npzread(joinpath(dataDir,"randBurst2c.npz"))
-    else
-        t =  [0:1/Fs:duration;] # define the time points for the signal
-        y = zeros(Float32, length(t))
+    t =  [0:1/Fs:duration;] # define the time points for the signal
+    y = zeros(Float32, length(t))
 
-        for i = 1:numPackets
-            burstFrequency = rand(freqs) #randomly sample from the given frequency range
-            burstDuration = rand(cLen)*cld(Fs,burstFrequency) #generate a random duration with respect to number of cycles
-        
-            while burstDuration>=length(t) # perform the operation again if anything exceeds the duration
-                burstFrequency = rand(freqs)
-                burstDuration = rand(amp)*cld(Fs,burstFrequency)
-            end
-        
-            burstStart = rand(1:length(t)-burstDuration) #make sure the starting point for the burst does not cause exeeding the duration of the signal
-            burst = rand([1:5;])*sin.(2*pi*burstFrequency*t)[burstStart:burstStart+burstDuration-1] #create the burst
-        
-            y[burstStart:burstStart+burstDuration-1] += burst # sum the burst to the data
-        
+    for i = 1:numPackets
+        burstFrequency = rand(freqs) #randomly sample from the given frequency range
+        burstDuration = rand(cLen)*cld(Fs,burstFrequency) #generate a random duration with respect to number of cycles
+    
+        while burstDuration>=length(t) # perform the operation again if anything exceeds the duration
+            burstFrequency = rand(freqs)
+            burstDuration = rand(amp)*cld(Fs,burstFrequency)
         end
+    
+        burstStart = rand(1:length(t)-burstDuration) #make sure the starting point for the burst does not cause exeeding the duration of the signal
+        burst = rand([1:5;])*sin.(2*pi*burstFrequency*t)[burstStart:burstStart+burstDuration-1] #create the burst
+    
+        y[burstStart:burstStart+burstDuration-1] += burst # sum the burst to the data
+    
     end
 
-    return y
+return y
 end
 
 

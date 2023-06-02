@@ -8,6 +8,16 @@ using Plots #for plotting
 using Measures #for formatting the plot
 
 
+currentDir = @__DIR__ # should be the folder ...\SingularSuperletTransform\code
+parentDir = abspath(joinpath(currentDir, "..")) # should be the folder ...\SingularSuperletTransform
+plotDir = joinpath(parentDir, "img") # should be the folder ...\SingularSuperletTransform\data
+
+# import packages developed by the authors for the time-frequency decomposition
+include(joinpath(currentDir, "cwt.jl"))
+include(joinpath(currentDir, "slt.jl"))
+include(joinpath(currentDir, "sst.jl"))
+include(joinpath(currentDir, "bpf.jl"))
+
 # import packages developed by the authors for the time-frequency decomposition
 include("generateData.jl")
 include("cwt.jl")
@@ -34,8 +44,10 @@ y = generateComplexBursts(duration, numPackets, freqs, cLen, amp, Fs, load=false
 println("finished generating the data")
 
 # perform TF decomposition on complex bursts
-yCWT = cwt(y, frange, Fs, norm=norm, step=step)
-ySST = sst(y, frange, Fs, norm=norm, step=step)
+yCWT_t   = cwt(y, frange, Fs, baseCycle=1, norm=norm, step=step)
+yCWT_f   = cwt(y, frange, Fs, baseCycle=7, norm=norm, step=step)
+yCWT_m   = cwt(y, frange, Fs, baseCycle=3, norm=norm, step=step)
+ySST     = sst(y, frange, Fs, baseCycle=3, norm=norm, step=step)
 println("finished TF decomposition of the complex bursts")
 
 
@@ -44,7 +56,11 @@ println("plotting")
 t = [0:1/Fs:length(y)/Fs;][1:end-1]
 
 pComplexBurstsTime = plot(t, y, legend=false, yaxis=false, xticks=false, grid=false, ylabel="amplitude [a.u]", xlims=(t[1], t[end]))
-pComplexBurstsCWT  = heatmap(t, frange, permutedims(yCWT), color=:jet, legend=false, xaxis=false, xticks=false, grid=false, ylabel="CWT", xlims=(t[1], t[end]))
+pComplexBurstsCWT_t  = heatmap(t, frange, permutedims(yCWT_t), color=:jet, legend=false, xaxis=false, xticks=false, grid=false, ylabel="CWT", xlims=(t[1], t[end]))
+pComplexBurstsCWT_f  = heatmap(t, frange, permutedims(yCWT_f), color=:jet, legend=false, xaxis=false, xticks=false, grid=false, ylabel="CWT", xlims=(t[1], t[end]))
+pComplexBurstsCWT_m  = heatmap(t, frange, permutedims(yCWT_m), color=:jet, legend=false, xaxis=false, xticks=false, grid=false, ylabel="CWT", xlims=(t[1], t[end]))
 pComplexBurstsSST  = heatmap(t, frange, permutedims(ySST), color=:jet, legend=false,  grid=false, ylabel="SST", xlabel="time", xlims=(t[1], t[end]))
 
-plot(pComplexBurstsTime, pComplexBurstsCWT, pComplexBurstsSST, link=:x, layout=grid(3,1), size=(1200,1000), margins=5.0mm)
+plot(pComplexBurstsTime, pComplexBurstsCWT_t, pComplexBurstsCWT_f, pComplexBurstsCWT_m, pComplexBurstsSST, link=:x, layout=grid(5,1), size=(1200,1400), margins=5.0mm)
+savefig(joinpath(plotDir, "comparison1.png")) 
+savefig(joinpath(plotDir, "comparison1.svg")) 
