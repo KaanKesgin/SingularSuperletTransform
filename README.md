@@ -1,5 +1,4 @@
 # Singular Superlet transform (SST)
-====================================
 
 The Singular Superlet Transform (SST) is a time-frequency decomposition method based on wavelet transform that can generate highly localised spectra.
 
