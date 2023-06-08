@@ -29,13 +29,15 @@ Quickstart
 Julia
 ---
 
+Available in this repository in a fully functional format under the folder 'code'. This repository will be updated for instructions on how to use after submission of the package to the Julia general registry. The scripts contain detailed comments so you're welcome to explore the code yourself until the next update here. 
+
 Python
 ---
 
 MATLAB
 ---
 
-Either git clone or download this repository, then add \your\download\directory\SingularSuperletTransform\code\MATLAB to your path
+Either git clone or download the [repository](https://github.com/KaanKesgin/SingularSuperletMAT), then add \your\download\directory\SingularSuperletMAT\ to your path
 Then, you can either execute run.m for a quick start and a comnparison with CWT using randomly generated data or simply use your own data with:
 
 ```Matlab

@@ -29,11 +29,11 @@ function generateComplexBursts(duration, numPackets, freqs, cLen, amp, Fs)
     
         while burstDuration>=length(t) # perform the operation again if anything exceeds the duration
             burstFrequency = rand(freqs)
-            burstDuration = rand(amp)*cld(Fs,burstFrequency)
+            burstDuration = rand(cLen)*cld(Fs,burstFrequency)
         end
     
         burstStart = rand(1:length(t)-burstDuration) #make sure the starting point for the burst does not cause exeeding the duration of the signal
-        burst = rand([1:5;])*sin.(2*pi*burstFrequency*t)[burstStart:burstStart+burstDuration-1] #create the burst
+        burst = rand(amp)*sin.(2*pi*burstFrequency*t)[burstStart:burstStart+burstDuration-1] #create the burst
     
         y[burstStart:burstStart+burstDuration-1] += burst # sum the burst to the data
     
